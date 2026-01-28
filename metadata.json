@@ -1,0 +1,7 @@
+{
+  "name": "GreenPoints",
+  "description": "A smart plastic bottle collection system with IoT integration, student leaderboards, and AI-powered sustainability insights.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
