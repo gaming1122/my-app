@@ -25,6 +25,22 @@ const App: React.FC = () => {
   
   const [activeView, setActiveView] = useState<ViewType>(ViewType.DASHBOARD);
 
+  // Initialize DB if empty
+  useEffect(() => {
+    const db = localStorage.getItem('gp_database');
+    if (!db) {
+      localStorage.setItem('gp_database', JSON.stringify({
+        ADMIN: {
+          'admin': { 
+            password: 'password123', 
+            profile: { id: 'ADM-001', name: 'Super Admin', role: 'ADMIN', points: 0, bottles: 0, joinedAt: new Date().toISOString() } 
+          }
+        },
+        USER: {}
+      }));
+    }
+  }, []);
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('gp_active_session', JSON.stringify(currentUser));
@@ -71,7 +87,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#05070a] overflow-hidden">
+    <div className="flex h-screen bg-[#000000] overflow-hidden">
       <Sidebar 
         activeView={activeView} 
         onViewChange={setActiveView} 
@@ -85,22 +101,22 @@ const App: React.FC = () => {
           <header className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="flex items-center space-x-3 mb-2">
-                <div className={`w-2 h-2 rounded-full shadow-[0_0_10px_currentColor] animate-pulse ${currentUser.role === 'ADMIN' ? 'text-indigo-500 bg-indigo-500' : 'text-emerald-500 bg-emerald-500'}`}></div>
-                <p className={`text-[10px] font-black uppercase tracking-[0.3em] mono ${currentUser.role === 'ADMIN' ? 'text-indigo-400' : 'text-emerald-500'}`}>
-                  {currentUser.role} NODE: AUTHORIZED
+                <div className={`w-2.5 h-2.5 rounded-full shadow-[0_0_12px_currentColor] animate-pulse ${currentUser.role === 'ADMIN' ? 'text-indigo-500 bg-indigo-500' : 'text-emerald-500 bg-emerald-500'}`}></div>
+                <p className={`text-[10px] font-black uppercase tracking-[0.4em] mono ${currentUser.role === 'ADMIN' ? 'text-indigo-400' : 'text-emerald-500'}`}>
+                  {currentUser.role} NODE: ONLINE
                 </p>
               </div>
-              <h1 className="text-5xl font-black text-white tracking-tighter leading-tight uppercase">
+              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight uppercase">
                 {activeView.replace('_', ' ')}
               </h1>
             </div>
             
-            <div className="flex items-center space-x-6 bg-[#0f1115] border border-white/5 p-2 pr-6 rounded-3xl glass">
-              <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.name}`} className="w-12 h-12 rounded-2xl border-2 border-[#05070a] bg-[#1e293b]" alt="A" />
-              <div className="h-8 w-[1px] bg-white/10"></div>
+            <div className="flex items-center space-x-6 bg-[#0a0a0a] border border-white/10 p-2 pr-6 rounded-2xl glass">
+              <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.name}`} className="w-10 h-10 rounded-xl border border-white/10 bg-[#111]" alt="Avatar" />
+              <div className="h-6 w-[1px] bg-white/10"></div>
               <div className="flex flex-col items-end">
-                <span className="text-sm font-bold text-white tracking-wide">{currentUser.name}</span>
-                <span className={`text-[10px] font-bold uppercase tracking-tighter ${currentUser.role === 'ADMIN' ? 'text-indigo-400' : 'text-emerald-400'}`}>
+                <span className="text-xs font-bold text-white tracking-wide">{currentUser.name}</span>
+                <span className={`text-[9px] font-bold uppercase tracking-tighter ${currentUser.role === 'ADMIN' ? 'text-indigo-500' : 'text-emerald-500'}`}>
                   {currentUser.id}
                 </span>
               </div>
